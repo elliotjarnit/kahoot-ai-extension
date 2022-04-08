@@ -6,9 +6,13 @@
 
   "description": "An extension that uses machine learning to figure out the most likely answer for the kahoot question ",
 
+  "host_permissions": [
+    "*://serpapi.com/*"
+  ],
+
   "content_scripts": [
     {
-      "matches": ["*://kahoot.it/challenge/*", "*://*.kahoot.it/challenge/*"],
+      "matches": ["*://kahoot.it/*", "*://*.kahoot.it/*"],
       "js": ["index.js"]
     }
   ]
