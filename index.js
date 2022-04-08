@@ -135,8 +135,10 @@ const observer1 = new MutationObserver((mutations, obs) => {
 
                     if (data["answer_box"]["answer"] !== undefined) {
                         temp.push([questions[cur][0], questions[cur][1], compareTwoStrings(data["answer_box"]["answer"], questions[cur][1])])
-                    } else {
+                    } else if (data["answer_box"]["snippet"] !== undefined) {
                         temp.push([questions[cur][0], questions[cur][1], data["answer_box"]["snippet"].split(questions[cur][1]).length - 1])
+                    } else if (data["answer_box"]["title"] !== undefined) {
+                        temp.push([questions[cur][0], questions[cur][1], data["answer_box"]["title"].split(questions[cur][1]).length - 1])
                     }
                 } else if (data["answer_box"]["type"] === "calculator_result") {
                     // Calculator answer box
