@@ -163,11 +163,11 @@ const observer1 = new MutationObserver((mutations, obs) => {
             } else {
                 for (let cur in questions) {
                     if (questions[cur][0] === correct_answer) {
-                        questions[cur][0].style.backgroundColor = "green"
-                        questions[cur][0].firstElementChild.style.backgroundColor = "green"
+                        questions[cur][0].style.backgroundColor = "rgb(94, 176, 53)"
+                        questions[cur][0].firstElementChild.style.backgroundColor = "rgb(94, 176, 53)"
                     } else {
-                        questions[cur][0].style.backgroundColor = "red"
-                        questions[cur][0].firstElementChild.style.backgroundColor = "red"
+                        questions[cur][0].style.backgroundColor = "rgb(235, 47, 78)"
+                        questions[cur][0].firstElementChild.style.backgroundColor = "rgb(235, 47, 78)"
                     }
                 }
             }
