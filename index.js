@@ -1,3 +1,5 @@
+const api_key = "44be38c29dc151b13cddd43381d35b6fcb9a87d654eaa2c585ffec90d96477b7"
+
 console.log("Loaded Kahoot AI")
 
 function compareTwoStrings(first, second) {
@@ -59,7 +61,7 @@ const observer1 = new MutationObserver((mutations, obs) => {
         }
         const url = ("https://serpapi.com/search.json?engine=google"
                     + "&q=" + questionTitle.innerHTML.replaceAll(" ", "+").replaceAll("?", "")
-                    + "&api_key=44be38c29dc151b13cddd43381d35b6fcb9a87d654eaa2c585ffec90d96477b7")
+                    + "&api_key=" + api_key)
         fetch(url).then(function(response) {
             return response.json();
         }).then(function(data) {
