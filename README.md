@@ -6,8 +6,13 @@ This is an extension that will get the question, google it, and then automatical
 
 This extension was made as a fun challenge and currently does work. There are alot of limitations and you may need to put in a custom serpapi api key but other than that its fine. I am going to work on making it a bit more user friendly and fix alot of bugs.
 
+## Current Modes
 
-## Currently known bugs:
+
+####Highlight correct question:
+![Highlight mode](assets/highlight.png)
+
+## Currently known bugs
 - Math equations and other special text breaks the bot
 - Can only work when the question is displayed on page (nothing I can do about that)
 - Sucks at True/False questions
