@@ -1,6 +1,23 @@
 const api_key = "44be38c29dc151b13cddd43381d35b6fcb9a87d654eaa2c585ffec90d96477b7"
 
+toastr.options = {
+    "debug": false,
+    "progressBar": true,
+    "positionClass": "toast-bottom-right",
+    "preventDuplicates": false,
+    "onclick": null,
+    "showDuration": "3000",
+    "hideDuration": "1000",
+    "timeOut": "3000",
+    "extendedTimeOut": "3000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+}
+
 console.log("Loaded Kahoot AI")
+toastr.success("Kahoot AI Loaded!")
 
 function compareTwoStrings(first, second) {
     first = first.replace(/\s+/g, '')
@@ -83,6 +100,8 @@ const observer1 = new MutationObserver((mutations, obs) => {
                     temp.push([questions[cur][0], questions[cur][1], compareTwoStrings(data["answer_box"]["answer"], questions[cur][1])])
                 } else if (data["answer_box"]["type"] == "calculator_result") {
                     temp.push([questions[cur][0], questions[cur][1], compareTwoStrings(data["answer_box"]["result"], questions[cur][1])])
+                } else {
+                    toastr.warning("This type of question is not supported yet.")
                 }
             }
             let max = 0

@@ -13,7 +13,8 @@
   "content_scripts": [
     {
       "matches": ["*://kahoot.it/*", "*://*.kahoot.it/*"],
-      "js": ["index.js"]
+      "css": ["libs/toastr.min.css"],
+      "js": ["libs/jquery.min.js", "libs/toastr.min.js", "index.js"]
     }
   ]
 
