@@ -9,7 +9,7 @@ This extension was made as a fun challenge and currently does work. There are al
 ## Current Modes
 
 
-####Highlight correct question:
+#### Highlight correct question:
 ![Highlight mode](assets/highlight.png)
 
 ## Currently known bugs
