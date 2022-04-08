@@ -6,8 +6,8 @@ function compareTwoStrings(first, second) {
     first = first.replace(/\s+/g, '')
     second = second.replace(/\s+/g, '')
 
-    if (first === second) return 1; // identical or empty
-    if (first.length < 2 || second.length < 2) return 0; // if either is a 0-letter or 1-letter string
+    if (first === second) return 1;
+    if (first.length < 2 || second.length < 2) return 0;
 
     let firstBigrams = new Map();
     for (let i = 0; i < first.length - 1; i++) {
@@ -68,12 +68,21 @@ const observer1 = new MutationObserver((mutations, obs) => {
             console.log(data)
             let temp = []
             for (let cur in questions) {
-                if (data["answer_box"]["type"] == "organic_result") {
+                if (data["answer_box"] === undefined) {
+
+                    // This would be if there is no answer box
+                    let total = 0
+                    for (let cur_result in data["organic_results"]) {
+                        if (data["organic_results"][cur_result]["snippet"] !== undefined) {
+                            total += compareTwoStrings(data["organic_results"][cur_result]["snippet"], questions[cur][1])
+                        }
+                    }
+                    temp.push([questions[cur][0], questions[cur][1], total])
+
+                } else if (data["answer_box"]["type"] == "organic_result") {
                     temp.push([questions[cur][0], questions[cur][1], compareTwoStrings(data["answer_box"]["answer"], questions[cur][1])])
                 } else if (data["answer_box"]["type"] == "calculator_result") {
                     temp.push([questions[cur][0], questions[cur][1], compareTwoStrings(data["answer_box"]["result"], questions[cur][1])])
-                } else {
-
                 }
             }
             let max = 0
