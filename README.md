@@ -15,7 +15,9 @@ This extension was made as a fun challenge and currently does work. There are al
 ## Currently known bugs
 - Math equations and other special text breaks the bot
 - Can only work when the question is displayed on page (nothing I can do about that)
-- Sucks at True/False questions
+- Sucks at True/False questions (Will be very hard to fix)
 - Will only pick one choice in multiple choice questions
+- Incredibly slow when answer boxes don't exist
+- Does not work for all types of answer boxes
 
 This is only tested on firefox and is not guaranteed to work on other browsers
