@@ -11,6 +11,12 @@
     "96": "assets/icon-96.png"
   },
 
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "kahootai@elliotjarnit.xyz"
+    }
+  },
+
   "permissions": [
     "webRequest",
     "webRequestBlocking",
@@ -26,7 +32,7 @@
   },
 
   "background": {
-    "scripts": ["storage.js", "auth.js"]
+    "scripts": ["storage.js"]
   },
 
   "content_scripts": [
