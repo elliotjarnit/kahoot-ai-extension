@@ -6,13 +6,32 @@
 
   "description": "An extension that uses machine learning to figure out the most likely answer for the kahoot question ",
 
-  "host_permissions": [
+  "icons": {
+    "48": "assets/icon.svg",
+    "96": "assets/icon.svg"
+  },
+
+  "permissions": [
+    "webRequest",
+    "webRequestBlocking",
+    "storage",
+    "https://httpbin.org/basic-auth/*",
     "*://serpapi.com/*"
   ],
 
+  "browser_action": {
+    "default_icon": "assets/icon-32.png",
+    "default_title": "Kahoot AI",
+    "default_popup": "popup/popup.html"
+  },
+
+  "background": {
+    "scripts": ["storage.js", "auth.js"]
+  },
+
   "content_scripts": [
     {
-      "matches": ["*://kahoot.it/*", "*://*.kahoot.it/*"],
+      "matches": ["*://kahoot.it/*", "*://www.kahoot.it/*"],
       "css": ["libs/toastr.min.css"],
       "js": ["libs/jquery.min.js", "libs/toastr.min.js", "index.js"]
     }
