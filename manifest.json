@@ -2,7 +2,7 @@
 
   "manifest_version": 2,
   "name": "Kahoot AI",
-  "version": "1.0.0",
+  "version": "1.0.1",
 
   "description": "An extension that uses google to figure out the most likely answer for the kahoot question ",
 
@@ -29,14 +29,14 @@
   },
 
   "background": {
-    "scripts": ["storage.js"]
+    "scripts": ["background_scripts/storage.js", "background_scripts/message_handler.js"]
   },
 
   "content_scripts": [
     {
       "matches": ["*://kahoot.it/*", "*://www.kahoot.it/*"],
       "css": ["libs/toastr.min.css"],
-      "js": ["libs/jquery.min.js", "libs/toastr.min.js", "index.js"]
+      "js": ["libs/jquery.min.js", "libs/toastr.min.js", "content_scripts/kahoot.js"]
     }
   ]
 
