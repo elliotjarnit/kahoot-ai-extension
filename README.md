@@ -21,4 +21,4 @@ This extension was made as a fun challenge and currently does work. There are al
 - Incredibly slow when answer boxes don't exist
 - Does not work for all types of answer boxes
 
-This is only tested on firefox and is not guaranteed to work on other browsers
+Tested on google chrome and firefox
