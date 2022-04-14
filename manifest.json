@@ -1,6 +1,5 @@
 {
-
-  "manifest_version": 3,
+  "manifest_version": 2,
   "name": "Kahoot AI",
   "version": "1.0.1",
 
@@ -18,21 +17,18 @@
   },
 
   "permissions": [
-    "storage"
-  ],
-
-  "host_permissions": [
+    "storage",
     "*://serpapi.com/*"
   ],
 
-  "action": {
+  "browser_action": {
     "default_icon": "assets/icon-32.png",
     "default_title": "Kahoot AI",
     "default_popup": "popup/popup.html"
   },
 
   "background": {
-    "service_worker": "background.js"
+    "scripts": ["background.js"]
   },
 
   "content_scripts": [
