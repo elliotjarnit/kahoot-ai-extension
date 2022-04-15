@@ -1,7 +1,7 @@
 # Kahoot AI
 [![firefox](https://ffp4g1ylyit3jdyti1hqcvtb-wpengine.netdna-ssl.com/addons/files/2015/11/get-the-addon.png)](https://addons.mozilla.org/en-US/firefox/addon/kahoot-ai/)
 
-[![wakatime](https://wakatime.com/badge/user/375c1678-47a7-471d-80d0-99dbd057623b/project/de334e4a-0ad5-4c78-8885-70769ed8899e.svg)](https://wakatime.com/badge/user/375c1678-47a7-471d-80d0-99dbd057623b/project/de334e4a-0ad5-4c78-8885-70769ed8899e)
+[![wakatime](https://wakatime.com/badge/github/Swiftzerr/kahoot-ai-extension.svg)](https://wakatime.com/badge/github/Swiftzerr/kahoot-ai-extension)
 
 **THIS EXTENSION WILL NOT ALWAYS BE 100% CORRECT!!!**
 
