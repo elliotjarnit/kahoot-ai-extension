@@ -105,7 +105,7 @@ const wait_for_question_load = new MutationObserver((mutations, obs) => {
             // Send a message to the background script to google the question
             chrome.runtime.sendMessage({
                 // Tells the background script to google the question
-                type: "google_search",
+                type: "serpapi_search",
                 // Gives the background script the user's api key
                 api_key: key.key,
                 // Gives the background script the question text that has the bad characters replaced
@@ -113,15 +113,28 @@ const wait_for_question_load = new MutationObserver((mutations, obs) => {
                     .replaceAll("?", "")
                     .replaceAll("_", "")
                     .replaceAll("  ", " ")
-                    .replaceAll(" ", "+")}, function(pre_data) {
-                // Sets the global variable data to the response from the background script
-                data = pre_data;
-                // Disconnects the observer and waits for the answers to load
-                obs.disconnect();
-                wait_for_answer_load.observe(document, {
-                    childList: true,
-                    subtree: true
-                });
+                    .replaceAll(" ", "+")}, function(response) {
+                // Checks if the response is valid
+                if (response.valid) {
+                    // Sets the global variable data to the response from the background script
+                    data = response.json;
+                    // Disconnects the observer and waits for the answers to load
+                    obs.disconnect();
+                    wait_for_answer_load.observe(document, {
+                        childList: true,
+                        subtree: true
+                    })
+                } else {
+                    // Notifies the user that the api key is invalid
+                    toastr.error("Couldn't connect to the servers. Check the console for more information.");
+                    console.log(response.error);
+                    // Disconnects the observer and waits for the answers to load
+                    obs.disconnect();
+                    wait_for_answer_load.observe(document, {
+                        childList: true,
+                        subtree: true
+                    })
+                }
             })
         })
     }
@@ -219,6 +232,36 @@ const wait_for_answer_load = new MutationObserver((mutations, obs) => {
             else if (data["answer_box"]["type"] === "calculator_result") {
                 // Pushes the similarity percentage of the current and the calculator answer to the temp array
                 temp.push([answers[cur][0], answers[cur][1], compareTwoStrings(data["answer_box"]["result"], answers[cur][1])])
+            }
+            // Checks if the answer box is a finance type
+            else if (data["answer_box"]["type"] === "finance_results") {
+                // Pushes the similarity percentage of the current and the price to the temp array
+                temp.push([answers[cur][0], answers[cur][1], compareTwoStrings(data["answer_box"]["price"], answers[cur][1])])
+            }
+            // Checks if the answer box is a population type
+            else if (data["answer_box"]["type"] === "population_result") {
+                // Pushes the similarity percentage of the current and the population to the temp array
+                temp.push([answers[cur][0], answers[cur][1], compareTwoStrings(data["answer_box"]["population"], answers[cur][1])])
+            }
+            // Checks if the answer box is a converter type
+            else if (data["answer_box"]["type"] === "currency_converter") {
+                // Pushes the similarity percentage of the current and the converter answer to the temp array
+                temp.push([answers[cur][0], answers[cur][1], compareTwoStrings(data["answer_box"]["price"], answers[cur][1])])
+            }
+            // Checks if the answer box is a dictionary type
+            else if (data["answer_box"]["type"] === "dictionary_results") {
+                let total = 0;
+                // Loops through all the definitions in the answer box
+                for (let def in data["answer_box"]["definitions"]) {
+                    // Pushes the similarity percentage of the current and the definition to the temp array
+                    total += [answers[cur][0], answers[cur][1], compareTwoStrings(data["answer_box"]["definitions"][def], answers[cur][1])]
+                }
+                temp.push([answers[cur][0], answers[cur][1], total])
+            }
+            // Checks if the answer box is a translation type
+            else if (data["answer_box"]["type"] === "translation_result") {
+                // Pushes the similarity percentage of the current and the translation to the temp array
+                temp.push([answers[cur][0], answers[cur][1], compareTwoStrings(data["answer_box"]["translation"]["target"]["text"], answers[cur][1])])
             }
             // If the answer box is any other type then it is not supported yet and lets the user know
             else {

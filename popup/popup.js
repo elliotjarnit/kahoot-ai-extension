@@ -1,9 +1,45 @@
 // Selects the api key input box in the popup
 const api_input = document.getElementById("api-key");
+let error_timeout
 
 // Function that stores the api key input box value in local storage
 function storeSettings() {
-    chrome.storage.local.set({key: api_input.value});
+    // Checks if there is anything but 64 characters in the api key input box
+    if (api_input.value.length !== 64) {
+        // Clears the api key input box and displays an error message
+        api_input.value = "";
+        document.getElementById("error-message-box").innerHTML = "Please enter a valid API key";
+        document.getElementById("error-message-box").style.opacity = "1";
+        if (error_timeout) {
+            clearTimeout(error_timeout);
+        }
+        // After 5 seconds the error message is hidden
+        error_timeout = setTimeout(function() {
+            document.getElementById("error-message-box").style.opacity = "0";
+        }, 5000);
+    } else  {
+        // Sends a message to the background script to send a test request to the api key
+        chrome.runtime.sendMessage({
+            "type": "serpapi_test",
+            "api_key": api_input.value
+        }, function (response) {
+            if (response.valid) {
+                chrome.storage.local.set({key: api_input.value});
+            } else {
+                // Clears the api key input box and displays an error message
+                api_input.value = "";
+                document.getElementById("error-message-box").innerHTML = "Please enter a valid API key";
+                document.getElementById("error-message-box").style.opacity = "1";
+                if (error_timeout) {
+                    clearTimeout(error_timeout);
+                }
+                // After 5 seconds the error message is hidden
+                error_timeout = setTimeout(function() {
+                    document.getElementById("error-message-box").style.opacity = "0";
+                }, 5000);
+            }
+        })
+    }
 }
 
 // Function that loads the api key input box value from local storage
