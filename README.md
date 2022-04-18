@@ -1,7 +1,11 @@
 # Kahoot AI
-[![firefox](https://ffp4g1ylyit3jdyti1hqcvtb-wpengine.netdna-ssl.com/addons/files/2015/11/get-the-addon.png)](https://addons.mozilla.org/en-US/firefox/addon/kahoot-ai/)
+[![Download for Chrome](https://i.imgur.com/h2VYS6X.png)](https://chrome.google.com/webstore/detail/kahoot-ai/aaincicgdmboldkiddgckheekpfecdaf)
+[![Download for Firefox](https://ffp4g1ylyit3jdyti1hqcvtb-wpengine.netdna-ssl.com/addons/files/2015/11/get-the-addon.png)](https://addons.mozilla.org/en-US/firefox/addon/kahoot-ai/)
 
 [![wakatime](https://wakatime.com/badge/github/Swiftzerr/kahoot-ai-extension.svg)](https://wakatime.com/badge/github/Swiftzerr/kahoot-ai-extension)
+[![chromerating](https://img.shields.io/chrome-web-store/rating/aaincicgdmboldkiddgckheekpfecdaf?logo=googlechrome)](https://chrome.google.com/webstore/detail/kahoot-ai/aaincicgdmboldkiddgckheekpfecdaf)
+[![firefoxrating](https://img.shields.io/amo/rating/kahoot-ai?logo=firefox)](https://addons.mozilla.org/en-US/firefox/addon/kahoot-ai/)
+
 
 **THIS EXTENSION WILL NOT ALWAYS BE 100% CORRECT!!!**
 
