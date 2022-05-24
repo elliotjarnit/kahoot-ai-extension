@@ -20,6 +20,79 @@ console.log("Loaded Kahoot AI")
 // Notify the user that the script has loaded
 toastr.success("Kahoot AI Loaded!")
 
+let popupQueue = []
+
+// Create a fullscreen blur div
+let blurBox = document.createElement('div')
+blurBox.style.position = 'fixed'
+blurBox.style.width = '100%'
+blurBox.style.height = '100%'
+blurBox.style.top = '0'
+blurBox.style.left = '0'
+blurBox.style.zIndex = '9998'
+blurBox.style.opacity = '0.5'
+blurBox.style.backgroundColor = '#000'
+blurBox.style.visibility = 'hidden'
+// Create the update popup
+let updateWindow = document.createElement('div')
+updateWindow.style.position = 'fixed'
+updateWindow.id = 'update-popup'
+updateWindow.style.zIndex = '9999'
+updateWindow.style.display = 'block'
+// Size the popup
+updateWindow.style.width = '400px'
+updateWindow.style.height = '250px'
+// Center the popup
+updateWindow.style.top = '50%'
+updateWindow.style.left = '50%'
+updateWindow.style.transform = 'translate(-50%, -50%)'
+// Style the popup
+updateWindow.style.backgroundColor = '#f2f2f2'
+updateWindow.style.border = '2px solid black'
+updateWindow.style.padding = '16px'
+updateWindow.style.borderRadius = '10px'
+updateWindow.style.textAlign = 'center'
+// Hide the popup
+updateWindow.style.visibility = 'hidden'
+// Add a close button
+let closeButton = document.createElement('span')
+// Position the close button
+closeButton.style.position = 'absolute'
+closeButton.style.right = '4px'
+closeButton.style.top = '4px'
+// Change the text of the close button to an X
+closeButton.innerHTML = '&times;'
+// Style the close button
+closeButton.style.fontSize = '40px'
+closeButton.style.fontWeight = 'bold'
+// Make the hover cursor a pointer
+closeButton.style.cursor = 'pointer'
+// Give it some transitioning
+closeButton.style.transition = '0.1s'
+// Add a close button event listener
+closeButton.addEventListener('click', function() {
+    if (popupQueue.length > 0) {
+        removePopupElements()
+        popupQueue[0].forEach(function(popup) {
+            updateWindow.appendChild(popup)
+        })
+        popupQueue.splice(0, 1)
+    } else {
+        blurBox.style.visibility = 'hidden'
+        updateWindow.style.visibility = 'hidden'
+        removePopupElements()
+    }
+})
+// Add hover effects
+closeButton.addEventListener('mouseover', function() {closeButton.style.color = '#808080'})
+closeButton.addEventListener('mouseleave', function() {closeButton.style.color = 'black'})
+// Add the popup and blur to the page
+document.body.appendChild(blurBox)
+document.body.appendChild(updateWindow)
+// Add the close button to the popup
+updateWindow.appendChild(closeButton)
+
+
 // This function will get the amount of words in a string
 function getWordCount(str) {
     return str.split(' ')
@@ -31,34 +104,126 @@ function getWordCount(str) {
 function compareTwoStrings(first, second) {
     first = first.replace(/\s+/g, '')
     second = second.replace(/\s+/g, '')
-
     if (first === second) return 1;
     if (first.length < 2 || second.length < 2) return 0;
-
     let firstBigrams = new Map();
     for (let i = 0; i < first.length - 1; i++) {
         const bigram = first.substring(i, i + 2);
         const count = firstBigrams.has(bigram)
             ? firstBigrams.get(bigram) + 1
             : 1;
-
         firstBigrams.set(bigram, count);
     };
-
     let intersectionSize = 0;
     for (let i = 0; i < second.length - 1; i++) {
         const bigram = second.substring(i, i + 2);
         const count = firstBigrams.has(bigram)
             ? firstBigrams.get(bigram)
             : 0;
-
         if (count > 0) {
             firstBigrams.set(bigram, count - 1);
             intersectionSize++;
         }
     }
-
     return (2.0 * intersectionSize) / (first.length + second.length - 2);
+}
+
+function removePopupElements() {
+    if (updateWindow.children.length > 1) {
+        while (updateWindow.children.length > 1) {
+            updateWindow.removeChild(updateWindow.children[1])
+        }
+    }
+}
+
+function queueElements(elements) {
+    if (updateWindow.children.length > 1) {
+        let list = []
+        elements.forEach(function(element) {
+            list.push(element)
+        })
+        popupQueue.push(list)
+    } else {
+        elements.forEach(function(element) {
+            updateWindow.appendChild(element)
+        })
+        blurBox.style.visibility = 'visible'
+        updateWindow.style.visibility = 'visible'
+    }
+}
+
+function apiKeyPopup() {
+    console.trace('Creating api key popup')
+    // Create the popup elements
+    let titleText = document.createElement('h1')
+    let bodyText = document.createElement('p')
+    // Style the text
+    titleText.style.fontSize = '24px'
+    bodyText.style.fontFamily = 'Poppins'
+    bodyText.style.fontSize = '16px'
+    // Change the text content
+    titleText.innerHTML = '<b>Invalid API Key</b>'
+    bodyText.innerHTML = '<br>You need to have a SerpAPI key to use Kahoot AI. <br><br>' +
+        '1. Go to the <a style="color: -webkit-link;" href="https://serpapi.com/users/sign_in" target="_blank">SerpApi website</a>.<br>' +
+        '2. Create an account if you do not already have one<br>' +
+        '3. Once logged in, choose API key from the sidebar<br>' +
+        '4. Then paste the API key below<br>'
+    let input = document.createElement('input')
+    input.setAttribute('type', 'text')
+    input.setAttribute('id', 'apiKey')
+    input.setAttribute('size', '10')
+    let validText = document.createElement('p')
+    validText.style.fontFamily = 'Poppins'
+    validText.style.fontSize = '16px'
+    validText.style.color = 'red'
+    validText.style.marginTop = '10px'
+    validText.innerHTML = 'Invalid API Key'
+    let timeout
+    input.addEventListener('input', function() {
+        clearTimeout(timeout)
+        timeout = setTimeout(function() {
+            if (input.value.length === 64) {
+                chrome.runtime.sendMessage({type: "serpapi_test", "api_key": input.value}, function (response) {
+                    console.log(response)
+                    if (response.valid) {
+                        validText.style.color = 'green'
+                        validText.innerHTML = 'Valid API Key!<br>You can close this popup.'
+                        input.disabled = true
+                        chrome.storage.local.set({key: input.value});
+                    } else {
+                        validText.style.color = 'red'
+                        validText.innerHTML = 'Invalid API Key'
+                    }
+            })} else {
+                validText.style.color = 'red'
+                validText.innerHTML = 'Invalid API Key'
+            }}, 500)
+    })
+
+    // Queue the elements
+    queueElements([titleText, bodyText, input, validText])
+}
+
+function updatePopup() {
+    console.trace('Creating update popup')
+    // Create the popup elements
+    let titleText = document.createElement('h1')
+    let bodyText = document.createElement('p')
+    // Style the text
+    titleText.style.fontSize = '24px'
+    bodyText.style.fontFamily = 'Poppins'
+    bodyText.style.fontSize = '16px'
+    // Change the text content
+    titleText.innerHTML = '<b>Kahoot AI Update</b>'
+    chrome.runtime.sendMessage({type: "check_version"}, function(response) {
+        if (response.valid) {
+            bodyText.innerHTML = '<br>Kahoot AI has updated to version <b>' + response.version + '</b>!<br>'
+        } else {
+            bodyText.innerHTML = '<br>Kahoot AI has updated to the latest version!<br>'
+        }
+    })
+    // Queue the elements
+    queueElements([titleText, bodyText])
 }
 
 // Make variable global
@@ -130,7 +295,7 @@ const wait_for_question_load = new MutationObserver((mutations, obs) => {
                     console.log(response.error);
                     // Disconnects the observer and waits for the answers to load
                     obs.disconnect();
-                    wait_for_answer_load.observe(document, {
+                    wait_for_question_unload.observe(document, {
                         childList: true,
                         subtree: true
                     })
@@ -280,8 +445,7 @@ const wait_for_answer_load = new MutationObserver((mutations, obs) => {
             }
         }
         // If all the confidence values are 0 then it lets the user know that it could not find a correct answer
-        if (correct_answer === null) {
-            console.log
+        if (max === 0) {
             toastr.error("Couldn\'t figure out the correct answer")
         }
         // Checks if it could find a could find the correct answer
@@ -310,6 +474,25 @@ const wait_for_answer_load = new MutationObserver((mutations, obs) => {
         subtree: true
     });
 })
+
+// Checks if the update popup should be shown
+chrome.runtime.sendMessage({type: "check_update"}, function (response) {
+    if (response.valid) {
+        // Shows the update popup
+        updatePopup()
+    }
+})
+
+// Checks if the api key is valid
+chrome.storage.local.get('key', (key) => {
+    chrome.runtime.sendMessage({type: "serpapi_test", "api_key": key.key}, function (response) {
+        if (!response.valid) {
+            // Shows the api key popup
+            apiKeyPopup()
+        }
+    })
+})
+
 
 // Starts the observer that waits for the first question to load
 wait_for_question_load.observe(document, {

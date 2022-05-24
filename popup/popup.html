@@ -4,13 +4,18 @@
     <meta charset="UTF-8">
 </head>
 <body>
-    <div class="main-body">
-        <label for="api-key">Enter serpapi api key:</label>
+    <div class="main-body" style = "height: 165px; width: 250px; padding-bottom: 5px;">
+        <label for="api-key">Enter SerpApi key:</label>
         <input type="text" id="api-key" name="api-key" required
-               minlength="64" maxlength="64" size="10">
+               minlength="64" maxlength="64" size="19">
         <div id="error-message-box" style="opacity: 0; color: red; font-weight: bold;">placeholder</div>
         <br>
-        <p>To get your api key, head to the <br><a href="https://serpapi.com/users/sign_in">serpapi website</a>, make an account, <br> and then on the left sidebar choose <br> api key.</p>
+        <p>How to get an API key:</p>
+        <ol>
+            <li>Go to the <a href="https://serpapi.com/users/sign_in">SerpApi website</a></li>
+            <li>Create an account if you do not already have one</li>
+            <li>Once logged in, choose API key from the sidebar</li>
+        </ol>
     </div>
     <script src="popup.js"></script>
 </body>

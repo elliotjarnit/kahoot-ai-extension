@@ -23,9 +23,7 @@ function storeSettings() {
             "type": "serpapi_test",
             "api_key": api_input.value
         }, function (response) {
-            if (response.valid) {
-                chrome.storage.local.set({key: api_input.value});
-            } else {
+            if (!response.valid) {
                 // Clears the api key input box and displays an error message
                 api_input.value = "";
                 document.getElementById("error-message-box").innerHTML = "Please enter a valid API key";
@@ -40,6 +38,7 @@ function storeSettings() {
             }
         })
     }
+    chrome.storage.local.set({key: api_input.value});
 }
 
 // Function that loads the api key input box value from local storage
@@ -50,3 +49,16 @@ chrome.storage.local.get('key', (value) => {
 
 // Runs store settings when the api key input box loses focus
 api_input.addEventListener("blur", storeSettings);
+
+document.addEventListener('DOMContentLoaded', function () {
+    let links = document.getElementsByTagName("a");
+    for (let i = 0; i < links.length; i++) {
+        (function () {
+            let ln = links[i];
+            let location = ln.href;
+            ln.onclick = function () {
+                chrome.tabs.create({active: true, url: location});
+            };
+        })();
+    }
+});
